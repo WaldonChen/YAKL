@@ -15,6 +15,8 @@ if(NOT CMAKE_BUILD_TYPE)
       CACHE STRING "Choose the type of build." FORCE)
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 find_package(Kokkos REQUIRED)
 
 set(YAKL_F90_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/YAKL_gator_mod.F90)
@@ -43,6 +45,7 @@ target_include_directories(
   yakl_fortran
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
          $<INSTALL_INTERFACE:include/YAKL>)
 
 # Special treatment for MPI
