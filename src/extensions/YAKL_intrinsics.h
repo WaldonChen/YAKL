@@ -33,3 +33,4 @@
 #include "intrinsics/YAKL_intrinsics_pack.h"
 #include "intrinsics/YAKL_intrinsics_min.h"
 #include "intrinsics/YAKL_intrinsics_max.h"
+#include "intrinsics/YAKL_intrinsics_exp.h"
