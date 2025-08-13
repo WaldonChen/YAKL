@@ -647,6 +647,30 @@ int main() {
       }
     }
 
+    {
+      using namespace yakl::componentwise;
+      using yakl::intrinsics::min;
+      using yakl::intrinsics::max;
+      constexpr int n = 10;
+      real_c_1d a("a", n);
+      real_c_1d b("b", n);
+
+      yakl::c::parallel_for(
+          n, KOKKOS_LAMBDA(int i) {
+            a(i) = i;
+          });
+
+      b = min(5.0, max(2.0, a));
+
+      if (b(0) != 2.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(1) != 2.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(2) != 2.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(3) != 3.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(4) != 4.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(5) != 5.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(6) != 5.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+      if (b(7) != 5.0) die("ERROR: wrong min(5.0, max(2.0, a))");
+    }
 
     {
       using namespace yakl::componentwise;

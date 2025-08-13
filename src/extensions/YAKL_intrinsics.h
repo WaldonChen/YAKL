@@ -31,5 +31,5 @@
 #include "intrinsics/YAKL_intrinsics_matinv.h"
 #include "intrinsics/YAKL_intrinsics_transpose.h"
 #include "intrinsics/YAKL_intrinsics_pack.h"
-
-
+#include "intrinsics/YAKL_intrinsics_min.h"
+#include "intrinsics/YAKL_intrinsics_max.h"

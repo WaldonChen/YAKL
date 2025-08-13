@@ -11,6 +11,53 @@ namespace yakl {
   namespace componentwise {
 
     ///////////////////////////////////////////////////////////////////////
+    // unary negative operator
+    ///////////////////////////////////////////////////////////////////////
+
+    // negative
+    template <class T1, int n, int STYLE>
+    inline Array<decltype(T1()), n, memHost, STYLE>
+    operator-(Array<T1, n, memHost, STYLE> const &rhs) {
+      auto ret = rhs.template createHostObject<decltype(T1())>();
+      for (size_t i = 0; i < ret.totElems(); i++) {
+        ret.data()[i] = -rhs.data()[i];
+      }
+      return ret;
+    }
+    template <class T1, int N, int STYLE>
+    inline Array<decltype(T1()), N, memDevice, STYLE>
+    neg_array_scalar(Array<T1, N, memDevice, STYLE> const &rhs) {
+      auto ret = rhs.template createDeviceObject<decltype(T1())>();
+      c::parallel_for(
+          YAKL_AUTO_LABEL(), ret.totElems(),
+          KOKKOS_LAMBDA(int i) { ret.data()[i] = -rhs.data()[i]; });
+      return ret;
+    }
+    template <class T1, int N, int STYLE>
+    inline Array<decltype(T1()), N, memDevice, STYLE>
+    operator-(Array<T1, N, memDevice, STYLE> const &rhs) {
+      return neg_array_scalar(rhs);
+    }
+    template <class T1, int N, size_t D0, size_t D1, size_t D2, size_t D3>
+    KOKKOS_INLINE_FUNCTION SArray<decltype(T1()), N, D0, D1, D2, D3>
+    operator-(SArray<T1, N, D0, D1, D2, D3> const &rhs) {
+      SArray<decltype(T1()), N, D0, D1, D2, D3> ret;
+      for (size_t i = 0; i < ret.totElems(); i++) {
+        ret.data()[i] = -rhs.data()[i];
+      }
+      return ret;
+    }
+    template <class T1, int N, class B0, class B1, class B2, class B3>
+    KOKKOS_INLINE_FUNCTION FSArray<decltype(T1()), N, B0, B1, B2, B3>
+    operator-(FSArray<T1, N, B0, B1, B2, B3> const &rhs) {
+      FSArray<decltype(T1()), N, B0, B1, B2, B3> ret;
+      for (size_t i = 0; i < ret.totElems(); i++) {
+        ret.data()[i] = -rhs.data()[i];
+      }
+      return ret;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
     // Binary operators with Array LHS and scalar RHS
     ///////////////////////////////////////////////////////////////////////
 
